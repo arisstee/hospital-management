@@ -23,7 +23,6 @@ public class PatientController {
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
 
-
     @PutMapping("/update")
     public ResponseEntity<PatientUpdateDTO> updatePatient(@RequestBody PatientUpdateDTO patientDTO) {
         service.updatePatient(patientDTO);

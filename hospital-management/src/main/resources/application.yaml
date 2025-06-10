@@ -7,14 +7,16 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/hospital
     username: root
     password: Tea0816@
-    driver-class-name: com.mysql.jdbc.Driver
-    hikari:
-      data-source-properties:
-        integratedSecurity: true
+    driver-class-name: com.mysql.cj.jdbc.Driver # <-- FIX: Use the modern driver class
+    # hikari: # <-- COMMENT OUT or REMOVE this block if you're not using integrated security
+    #   data-source-properties:
+    #     integratedSecurity: true
 
   jpa:
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        # dialect: org.hibernate.dialect.MySQL8Dialect # <-- FIX: Comment out or remove this line
+        dialect: org.hibernate.dialect.MySQLDialect # <-- OPTIONAL: If you must specify, use this more general one
+    open-in-view: false # <-- FIX: Add this to remove the warning (good practice)

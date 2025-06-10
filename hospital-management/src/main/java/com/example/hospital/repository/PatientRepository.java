@@ -43,6 +43,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
 
 
         List<Patient> findByFirstNameContainingIgnoreCase(String firstName);
+    @Query("SELECT COUNT(p) > 0 FROM Patient p WHERE p.department.id = :departmentId")
+    boolean existsByDepartmentId(@Param("departmentId") Long departmentId);
 }
 
 

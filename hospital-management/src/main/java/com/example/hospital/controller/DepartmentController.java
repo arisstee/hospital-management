@@ -32,7 +32,7 @@ public class DepartmentController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<String> delete(@RequestBody Department department){
-        service.deleteDepartment(department);
+        service.deleteDepartment(department.getId());
         return new ResponseEntity<>("Department Deleted successfully!!", HttpStatus.OK);
     }
 

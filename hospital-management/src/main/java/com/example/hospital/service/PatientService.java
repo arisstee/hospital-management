@@ -2,6 +2,7 @@ package com.example.hospital.service;
 import com.example.hospital.dto.PatientUpdateDTO;
 import com.example.hospital.entity.Department;
 import com.example.hospital.entity.Patient;
+import com.example.hospital.exceptions.ResourceNotFoundException;
 import com.example.hospital.repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,14 @@ import java.util.List;
 public class PatientService {
     @Autowired
     PatientRepository repository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    public Patient getPatientById(Long id) {
+        return patientRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Patient", id));
+    }
 
     public List<Patient> getAllPatients() {
         return repository.findAll();
