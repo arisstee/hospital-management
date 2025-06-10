@@ -1,6 +1,4 @@
 package com.example.hospital.entity;
-
-import com.example.hospital.entity.Department;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;

@@ -3,6 +3,7 @@ package com.example.hospital.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -13,18 +14,16 @@ import lombok.ToString;
 @ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ClinicalRecord {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties("clinicalRecords")
+    @JsonProperty("patient")  // Explicitly enable serialization
     private Patient patient;
 
     @Column
     private String notes;
-
-
 }

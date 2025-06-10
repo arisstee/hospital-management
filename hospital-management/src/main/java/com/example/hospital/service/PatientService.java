@@ -18,8 +18,6 @@ public class PatientService {
     public List<Patient> getAllPatients() {
         return repository.findAll();
     }
-
-
 @Transactional
     public void updatePatient(PatientUpdateDTO patientDTO) {
         repository.updatePatient(
