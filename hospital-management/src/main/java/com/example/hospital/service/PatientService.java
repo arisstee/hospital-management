@@ -1,8 +1,11 @@
 package com.example.hospital.service;
+import com.example.hospital.dto.ClinicalRecordsDTO;
 import com.example.hospital.dto.PatientUpdateDTO;
+import com.example.hospital.entity.ClinicalRecord;
 import com.example.hospital.entity.Department;
 import com.example.hospital.entity.Patient;
 import com.example.hospital.exceptions.ResourceNotFoundException;
+import com.example.hospital.repository.ClinicalRecordRepository;
 import com.example.hospital.repository.PatientRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +18,9 @@ import java.util.List;
 public class PatientService {
     @Autowired
     PatientRepository repository;
+
+    @Autowired
+    ClinicalRecordRepository clinicalRecordRepository;
 
     @Autowired
     private PatientRepository patientRepository;
@@ -67,10 +73,30 @@ public class PatientService {
         return repository.findByFirstNameContainingIgnoreCase(firstName);
     }
 
-    // Delete Patient
+    @Transactional
     public void deletePatient(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Patient", id);
+        }
         repository.deleteById(id);
     }
 
+    public ClinicalRecord addClinicalRecord(ClinicalRecordsDTO clinicalRecordDTO) {
+        Patient patient = repository.findById(clinicalRecordDTO.getPatientId())
+                .orElseThrow(() -> new ResourceNotFoundException("Patient", clinicalRecordDTO.getPatientId()));
+
+        ClinicalRecord record = new ClinicalRecord();
+        record.setPatient(patient);
+        record.setNotes(clinicalRecordDTO.getNotes());
+
+        return clinicalRecordRepository.save(record);
+    }
+
+    public List<ClinicalRecord> getClinicalRecordsByPatientId(Long patientId) {
+        if (!repository.existsById(patientId)) {
+            throw new ResourceNotFoundException("Patient", patientId);
+        }
+        return clinicalRecordRepository.findByPatient_IdWithPatient(patientId);
+    }
 }
 

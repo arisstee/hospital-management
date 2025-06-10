@@ -1,6 +1,8 @@
 package com.example.hospital.controller;
 
+import com.example.hospital.dto.ClinicalRecordsDTO;
 import com.example.hospital.dto.PatientUpdateDTO;
+import com.example.hospital.entity.ClinicalRecord;
 import com.example.hospital.entity.Patient;
 import com.example.hospital.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,26 @@ public class PatientController {
     public ResponseEntity<List<Patient>> searchPatient(@RequestParam String firstName) {
         return ResponseEntity.ok(service.searchPatient(firstName));
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePatient(@PathVariable Long id) {
+        service.deletePatient(id);
+        return ResponseEntity.noContent().build();
+    }
 
+    @PostMapping("/{patientId}/clinical-records")
+    public ResponseEntity<ClinicalRecord> addClinicalRecord(
+            @PathVariable Long patientId,
+            @RequestBody ClinicalRecordsDTO clinicalRecordDTO) {
+        clinicalRecordDTO.setPatientId(patientId);
+        ClinicalRecord record = service.addClinicalRecord(clinicalRecordDTO);
+        return new ResponseEntity<>(record, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{patientId}/clinical-records")
+    public ResponseEntity<List<ClinicalRecord>> getPatientClinicalRecords(
+            @PathVariable Long patientId) {
+        List<ClinicalRecord> records = service.getClinicalRecordsByPatientId(patientId);
+        return ResponseEntity.ok(records);
+    }
 
 }

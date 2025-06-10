@@ -3,6 +3,7 @@ package com.example.hospital.service;
 import com.example.hospital.dto.ClinicalRecordsDTO;
 import com.example.hospital.entity.ClinicalRecord;
 import com.example.hospital.entity.Patient;
+import com.example.hospital.exceptions.ResourceNotFoundException;
 import com.example.hospital.repository.ClinicalRecordRepository;
 import com.example.hospital.repository.PatientRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -64,4 +65,6 @@ public class ClinicalRecordService {
     public List<ClinicalRecord> searchClinicalRecords(String keyword) {
         return repository.findByNotesContainingIgnoreCase(keyword);
     }
+
+
 }
